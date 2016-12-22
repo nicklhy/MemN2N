@@ -42,7 +42,7 @@ def get_memnn(edim, mem_size, nwords, nhop, lindim):
     for h in xrange(nhop):
         #  hid3dim = mx.sym.expand_dims(data=hid[-1], axis=1)
         Aout = mx.sym.Flatten(mx.sym.batch_dot(lhs=mx.sym.expand_dims(hid[-1], axis=1),
-                                               rhs=mx.sym.SwapAxis(Ain, dim1=1, dim2=2)))
+                                               rhs=mx.sym.transpose(Ain, axes=(0, 2, 1))))
         P = mx.sym.SoftmaxActivation(Aout, name='P')
         Bout = mx.sym.Flatten(mx.sym.batch_dot(lhs=mx.sym.expand_dims(P, axis=1),
                                                rhs=Bin))
@@ -66,12 +66,15 @@ def get_memnn(edim, mem_size, nwords, nhop, lindim):
                             num_args=1,
                             offset=(0, lindim),
                             h_w=(1, edim-lindim))
-            G = mx.sym.Reshape(G, shape=(-1, lindim))
+            G = mx.sym.Reshape(G, shape=(-1, edim-lindim))
             K = mx.sym.Activation(data=G, act_type='relu')
             hid.append(mx.sym.Concat(*[G, K], num_args=2, axis=1))
-        clf = mx.sym.FullyConnected(data=hid[-1], num_hidden=nwords, name='clf')
+        clf = mx.sym.FullyConnected(data=hid[-1],
+                                    num_hidden=nwords,
+                                    no_bias=True,
+                                    name='clf')
         loss = mx.sym.SoftmaxOutput(data=clf, label=target, name='prob')
         return loss
 
 if __name__ == '__main__':
-    sym = memnn(edim=150, mem_size=100, nwords=5000, nhop=6, lindim=75)
+    sym = get_memnn(edim=150, mem_size=100, nwords=5000, nhop=6, lindim=75)
