@@ -79,7 +79,7 @@ def train(args):
                                   init_hid=args.init_hid)
 
     lr_factor_step = int(args.lr_factor_epoch*len(train_data)/args.batch_size)
-    wd = 0.0
+    wd = 0.0005
     beta1 = 0.1
     optimizer_args = {
         'optimizer': 'adam',
@@ -93,7 +93,7 @@ def train(args):
     }
 
     eval_metric = []
-    eval_metric.append('ce')
+    #  eval_metric.append('ce')
     eval_metric.append(mx.metric.np(Perplexity))
 
     arg_params = {}

@@ -55,7 +55,7 @@ class PTBDataIter(mx.io.DataIter):
         self.mem_size = mem_size
         self.init_hid = init_hid
 
-        self.num_data = len(data)/batch_size
+        self.num_data = len(data)
         self.cursor = -self.batch_size
 
         self.provide_data = [('data', (self.batch_size, self.edim)),
