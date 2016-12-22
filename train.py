@@ -23,8 +23,8 @@ parser.add_argument('--nepoch', type=int, default=100,
                     help='number of epoch to use during training [100]')
 parser.add_argument('--init-lr', type=float, default=0.01,
                     help='initial internal state value [0.1]')
-parser.add_argument('--lr-factor', type=float, default=0.5,
-                    help='times the lr with a factor for every lr-factor-epoch epoch [0.5]')
+parser.add_argument('--lr-factor', type=float, default=1.0/1.5,
+                    help='times the lr with a factor for every lr-factor-epoch epoch [0.666]')
 parser.add_argument('--lr-factor-epoch', type=float, default=1.0,
                     help='the number of epoch to factor the lr, must be larger than 1 [None(1 epoch)]')
 parser.add_argument('--init-hid', type=float, default=0.1,
@@ -79,18 +79,16 @@ def train(args):
                                   init_hid=args.init_hid)
 
     lr_factor_step = int(args.lr_factor_epoch*len(train_data)/args.batch_size)
-    wd = 0.0005
-    beta1 = 0.1
-    optimizer_args = {
-        'optimizer': 'adam',
-        'optimizer_params': {
-            'clip_gradient': args.max_grad_norm,
-            'learning_rate': args.init_lr,
-            'lr_scheduler': mx.lr_scheduler.FactorScheduler(lr_factor_step, args.lr_factor),
-            'wd': wd,
-            'beta1': beta1,
-        }
-    }
+    #  opt = mx.optimizer.Adam(learning_rate=args.init_lr,
+                            #  wd=0.0005,
+                            #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step, args.lr_factor),
+                            #  beta1=0.1,
+                            #  clip_gradient=args.max_grad_norm)
+    opt = mx.optimizer.SGD(learning_rate=args.init_lr,
+                           momentum=0.9,
+                           wd=0.0005,
+                           lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step, args.lr_factor),
+                           clip_gradient=args.max_grad_norm)
 
     eval_metric = []
     #  eval_metric.append('ce')
@@ -121,7 +119,7 @@ def train(args):
                           arg_params=arg_params,
                           aux_params=aux_params,
                           allow_missing=True)
-    mod_memnn.init_optimizer(**optimizer_args)
+    mod_memnn.init_optimizer(optimizer=opt)
 
     mod_memnn.fit(train_data_iter,
                   valid_data_iter,
