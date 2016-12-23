@@ -1,0 +1,309 @@
+{
+  "nodes": [
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "data", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(-1, 150)"}
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "C_weight", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(150, 150)"}
+    }, 
+    {
+      "op": "dot", 
+      "param": {}, 
+      "name": "dot0", 
+      "inputs": [[0, 0], [1, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "expand_dims", 
+      "param": {"axis": "1"}, 
+      "name": "expand_dims0", 
+      "inputs": [[0, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "context", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(-1, 100)"}
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "A_weight", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(10000, 150)"}
+    }, 
+    {
+      "op": "Embedding", 
+      "param": {
+        "input_dim": "10000", 
+        "output_dim": "150"
+      }, 
+      "name": "embedding0", 
+      "inputs": [[4, 0], [5, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "time", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(-1, 100)"}
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "TA_weight", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(100, 150)"}
+    }, 
+    {
+      "op": "Embedding", 
+      "param": {
+        "input_dim": "100", 
+        "output_dim": "150"
+      }, 
+      "name": "embedding1", 
+      "inputs": [[7, 0], [8, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "_Plus", 
+      "param": {}, 
+      "name": "_plus0", 
+      "inputs": [[6, 0], [9, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "SwapAxis", 
+      "param": {
+        "dim1": "1", 
+        "dim2": "2"
+      }, 
+      "name": "swapaxis0", 
+      "inputs": [[10, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "batch_dot", 
+      "param": {}, 
+      "name": "batch_dot0", 
+      "inputs": [[3, 0], [11, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Flatten", 
+      "param": {}, 
+      "name": "flatten0", 
+      "inputs": [[12, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "SoftmaxActivation", 
+      "param": {"mode": "instance"}, 
+      "name": "P", 
+      "inputs": [[13, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "expand_dims", 
+      "param": {"axis": "1"}, 
+      "name": "expand_dims1", 
+      "inputs": [[14, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "B_weight", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(10000, 150)"}
+    }, 
+    {
+      "op": "Embedding", 
+      "param": {
+        "input_dim": "10000", 
+        "output_dim": "150"
+      }, 
+      "name": "embedding2", 
+      "inputs": [[4, 0], [16, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "TB_weight", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(100, 150)"}
+    }, 
+    {
+      "op": "Embedding", 
+      "param": {
+        "input_dim": "100", 
+        "output_dim": "150"
+      }, 
+      "name": "embedding3", 
+      "inputs": [[7, 0], [18, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "_Plus", 
+      "param": {}, 
+      "name": "_plus1", 
+      "inputs": [[17, 0], [19, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "batch_dot", 
+      "param": {}, 
+      "name": "batch_dot1", 
+      "inputs": [[15, 0], [20, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Flatten", 
+      "param": {}, 
+      "name": "flatten1", 
+      "inputs": [[21, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "_Plus", 
+      "param": {}, 
+      "name": "_plus2", 
+      "inputs": [[2, 0], [22, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Reshape", 
+      "param": {
+        "keep_highest": "False", 
+        "reverse": "False", 
+        "shape": "(-1,1,1,150)", 
+        "target_shape": "(0,0)"
+      }, 
+      "name": "reshape2", 
+      "inputs": [[23, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Crop", 
+      "param": {
+        "center_crop": "False", 
+        "h_w": "(1,75)", 
+        "num_args": "1", 
+        "offset": "(0,75)"
+      }, 
+      "name": "crop1", 
+      "inputs": [[24, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Reshape", 
+      "param": {
+        "keep_highest": "False", 
+        "reverse": "False", 
+        "shape": "(-1,75)", 
+        "target_shape": "(0,0)"
+      }, 
+      "name": "reshape3", 
+      "inputs": [[25, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Activation", 
+      "param": {"act_type": "relu"}, 
+      "name": "activation0", 
+      "inputs": [[26, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "Concat", 
+      "param": {
+        "dim": "1", 
+        "num_args": "2"
+      }, 
+      "name": "concat0", 
+      "inputs": [[26, 0], [27, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "clf_weight", 
+      "inputs": [], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "clf_bias", 
+      "inputs": [], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "FullyConnected", 
+      "param": {
+        "no_bias": "False", 
+        "num_hidden": "10000"
+      }, 
+      "name": "clf", 
+      "inputs": [[28, 0], [29, 0], [30, 0]], 
+      "backward_source_id": -1
+    }, 
+    {
+      "op": "null", 
+      "param": {}, 
+      "name": "target", 
+      "inputs": [], 
+      "backward_source_id": -1, 
+      "attr": {"__shape__": "(-1, 10000)"}
+    }, 
+    {
+      "op": "SoftmaxOutput", 
+      "param": {
+        "grad_scale": "1", 
+        "ignore_label": "-1", 
+        "multi_output": "False", 
+        "normalization": "null", 
+        "out_grad": "False", 
+        "preserve_shape": "False", 
+        "use_ignore": "False"
+      }, 
+      "name": "prob", 
+      "inputs": [[31, 0], [32, 0]], 
+      "backward_source_id": -1
+    }
+  ], 
+  "arg_nodes": [
+    0, 
+    1, 
+    4, 
+    5, 
+    7, 
+    8, 
+    16, 
+    18, 
+    29, 
+    30, 
+    32
+  ], 
+  "heads": [[33, 0]]
+}

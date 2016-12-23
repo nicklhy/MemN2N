@@ -23,6 +23,8 @@ parser.add_argument('--nhop', type=int, default=6,
                     help='number of hops [6]')
 parser.add_argument('--mem_size', type=int, default=100,
                     help='memory size [100]')
+parser.add_argument('--init-hid', type=float, default=0.1,
+                    help='initial internal state value [0.1]')
 parser.add_argument('--data-dir', type=str, default='data',
                     help='data directory [data]')
 parser.add_argument('--data-name', type=str, default='ptb',
@@ -78,7 +80,7 @@ def test(args):
     mod_memnn.init_params(arg_params=arg_params, aux_params=aux_params)
 
     eval_metric = []
-    eval_metric.append(mx.metric.create('ce'))
+    #  eval_metric.append(mx.metric.create('ce'))
     eval_metric.append(mx.metric.np(Perplexity))
 
     def print_metric(metrics):
@@ -89,15 +91,16 @@ def test(args):
             logging.info('%s: %f' % (name, value))
 
     for preds, i_batch, batch in mod_memnn.iter_predict(test_data_iter):
-        pred_label = preds[0].asnumpy().argmax(axis=1)
-        label = batch.label[0].asnumpy().astype('int32')
+        #  pred_label = preds[0].asnumpy().argmax(axis=1)
+        #  label = batch.label[0].asnumpy().astype('int32')
 
         for metric in eval_metric:
-            metric.update(label, pred_label)
+            metric.update(batch.label, preds)
+            #  metric.update(label, pred_label)
 
-        print_metric()
+        print_metric(eval_metric)
 
-    print_metric()
+    print_metric(eval_metric)
 
 if __name__ == '__main__':
     test(args)

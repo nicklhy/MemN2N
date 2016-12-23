@@ -94,3 +94,9 @@ class PTBDataIter(mx.io.DataIter):
 
     def getlabel(self):
         return [mx.nd.array(self.target)]
+
+    def getpad(self):
+        if self.cursor+self.batch_size > self.num_data:
+            return self.cursor + self.batch_size - self.num_data
+        else:
+            return 0
