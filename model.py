@@ -39,7 +39,7 @@ def get_memnn(edim, mem_size, nwords, nhop, lindim):
                              output_dim=edim)
     Bin = Bin_c+Bin_t
 
-    for h in xrange(nhop):
+    for h in range(nhop):
         #  hid3dim = mx.sym.expand_dims(data=hid[-1], axis=1)
         Aout = mx.sym.Flatten(mx.sym.batch_dot(lhs=mx.sym.expand_dims(hid[-1], axis=1),
                                                rhs=mx.sym.transpose(Ain, axes=(0, 2, 1))))
@@ -69,12 +69,13 @@ def get_memnn(edim, mem_size, nwords, nhop, lindim):
             G = mx.sym.Reshape(G, shape=(-1, edim-lindim))
             K = mx.sym.Activation(data=G, act_type='relu')
             hid.append(mx.sym.Concat(*[G, K], num_args=2, axis=1))
-        clf = mx.sym.FullyConnected(data=hid[-1],
-                                    num_hidden=nwords,
-                                    no_bias=True,
-                                    name='clf')
-        loss = mx.sym.SoftmaxOutput(data=clf, label=target, name='prob')
-        return loss
+
+    clf = mx.sym.FullyConnected(data=hid[-1],
+                                num_hidden=nwords,
+                                no_bias=True,
+                                name='clf')
+    loss = mx.sym.SoftmaxOutput(data=clf, label=target, name='prob')
+    return loss
 
 if __name__ == '__main__':
     sym = get_memnn(edim=150, mem_size=100, nwords=5000, nhop=6, lindim=75)

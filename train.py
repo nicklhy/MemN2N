@@ -2,6 +2,7 @@ import os
 import logging
 import argparse
 import mxnet as mx
+import numpy as np
 from metric_factory import Perplexity
 from data_iter_factory import read_data, PTBDataIter
 from model import get_memnn
@@ -80,23 +81,37 @@ def train(args):
 
     lr_factor_step = int(args.lr_factor_epoch*len(train_data)/args.batch_size)
     opt = mx.optimizer.Adam(learning_rate=args.init_lr,
-                            wd=0.0005,
+                            wd=0.0,
                             lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
                                                                          args.lr_factor,
                                                                          stop_factor_lr=1e-7),
                             beta1=0.1,
                             clip_gradient=args.max_grad_norm)
     #  opt = mx.optimizer.SGD(learning_rate=args.init_lr,
-                           #  momentum=0.9,
-                           #  wd=0.0005,
-                           #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step, args.lr_factor),
+                           #  momentum=0.0,
+                           #  wd=0.00001,
+                           #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
+                                                                        #  args.lr_factor,
+                                                                        #  stop_factor_lr=1e-7),
                            #  clip_gradient=args.max_grad_norm)
+    #  opt = mx.optimizer.RMSProp(learning_rate=args.init_lr,
+                               #  wd=0.00001,
+                               #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
+                                                                            #  args.lr_factor,
+                                                                            #  stop_factor_lr=1e-7),
+                               #  clip_gradient=args.max_grad_norm)
+
 
     eval_metric = []
     #  eval_metric.append('ce')
     eval_metric.append(mx.metric.np(Perplexity))
 
     batch_end_callback = [mx.callback.Speedometer(args.batch_size, 50), ]
+
+    def norm_stat(d):
+        return mx.nd.norm(d)/np.sqrt(d.size)
+    mon = mx.mon.Monitor(50, norm_stat, '.*backward.*')
+    mon = None
 
     arg_params = {}
     aux_params = {}
@@ -130,7 +145,8 @@ def train(args):
                   eval_metric=eval_metric,
                   batch_end_callback=batch_end_callback,
                   epoch_end_callback=mx.callback.do_checkpoint(os.path.join(args.checkpoint_dir, 'memnn'), period=args.checkpoint_step),
-                  num_epoch=args.nepoch)
+                  num_epoch=args.nepoch,
+                  monitor=mon)
 
 
 if __name__ == '__main__':
