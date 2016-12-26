@@ -1,4 +1,9 @@
 *.pyc
 checkpoints/*
+cache/*
 *.params
 *.json
+*.pdf
+*.png
+*.jpg
+.DS_Store

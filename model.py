@@ -3,7 +3,7 @@ import mxnet as mx
 def get_memnn(edim, mem_size, nwords, nhop, lindim):
     data = mx.sym.Variable('data', shape=(-1, edim))
     time = mx.sym.Variable('time', shape=(-1, mem_size))
-    target = mx.sym.Variable('target', shape=(-1, nwords))
+    target = mx.sym.Variable('target')
     context = mx.sym.Variable('context', shape=(-1, mem_size))
 
     hid = []
