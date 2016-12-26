@@ -80,20 +80,20 @@ def train(args):
                                   init_hid=args.init_hid)
 
     lr_factor_step = int(args.lr_factor_epoch*len(train_data)/args.batch_size)
-    opt = mx.optimizer.Adam(learning_rate=args.init_lr,
-                            wd=0.0,
-                            lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
-                                                                         args.lr_factor,
-                                                                         stop_factor_lr=1e-7),
-                            beta1=0.1,
-                            clip_gradient=args.max_grad_norm)
-    #  opt = mx.optimizer.SGD(learning_rate=args.init_lr,
-                           #  momentum=0.0,
-                           #  wd=0.00001,
-                           #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
-                                                                        #  args.lr_factor,
-                                                                        #  stop_factor_lr=1e-7),
-                           #  clip_gradient=args.max_grad_norm)
+    #  opt = mx.optimizer.Adam(learning_rate=args.init_lr,
+                            #  wd=0.0,
+                            #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
+                                                                         #  args.lr_factor,
+                                                                         #  stop_factor_lr=1e-5),
+                            #  beta1=0.1,
+                            #  clip_gradient=args.max_grad_norm)
+    opt = mx.optimizer.SGD(learning_rate=args.init_lr,
+                           momentum=0.0,
+                           wd=0.0,
+                           lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,
+                                                                        args.lr_factor,
+                                                                        stop_factor_lr=1e-7),
+                           clip_gradient=args.max_grad_norm)
     #  opt = mx.optimizer.RMSProp(learning_rate=args.init_lr,
                                #  wd=0.00001,
                                #  lr_scheduler=mx.lr_scheduler.FactorScheduler(lr_factor_step,

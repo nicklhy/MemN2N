@@ -5,6 +5,8 @@ MXNet implementation of [End-To-End Memory Networks](http://arxiv.org/abs/1503.0
 
 ![alt tag](http://i.imgur.com/nv89JLc.png)
 
+**Known issue: SGD does not converge, ADAM converges but is not able to reach a good result(![details]).**
+
 Setup
 --------------
 
